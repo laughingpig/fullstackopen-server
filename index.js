@@ -10,6 +10,7 @@ morgan.token('json', function getJson (req) {
 })
 app.use(morgan(':method :url :status :response-time :json'))
 app.use(cors())
+app.use(express.static('build'))
 
 let persons = [
   {
