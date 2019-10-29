@@ -14,7 +14,7 @@ morgan.token('json', function getJson (req) {
 app.use(morgan(':method :url :status :response-time :json'))
 app.use(cors())
 
-app.get('/api/persons',(req,res,next) => {
+app.get('/api/persons',(req,res) => {
   Contact.find({}).then(persons => {
     res.json(persons.map(person => person.toJSON()))
   })
@@ -29,54 +29,52 @@ app.get('/api/persons/:id',(req,res,next) => {
       res.status(404).end()
     }
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id',(req,res,next) => {
-  newPerson = {
+  const newPerson = {
     name: req.body.name,
     number: req.body.number
   }
   Contact.findByIdAndUpdate(req.params.id, newPerson, { new: true }).then(person => {
     if(person){
-      res.json(person.toJSON())    
-      console.log("error")
+      res.json(person.toJSON())
+      console.log('error')
     }
     else {
       res.status(404).end()
     }
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.post('/api/persons',(req,res,next) => {
-  const person = req.body
-
   const newPerson = new Contact({
-    "name": req.body.name,
-    "number": req.body.number,
+    'name': req.body.name,
+    'number': req.body.number,
   })
-  newPerson.save().then(savedPerson => 
+  newPerson.save().then(savedPerson =>
     res.json(savedPerson.toJSON())
   )
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id',(req,response,next) => {
+app.delete('/api/persons/:id',(req,response) => {
   Contact.findByIdAndDelete(req.params.id)
     .then(result => {
       console.log(result)
-      response.status(204).end()  
+      response.status(204).end()
     })
 })
 
-app.get('/info',(req,res) => {
+app.get('/info',(req,res,next) => {
   Contact.find({}).then(persons => {
     const count = persons.length
     const date = new Date()
-    res.send(`Phonebook has info for ${count} people<br>`+date)  
+    res.send(`Phonebook has info for ${count} people<br>`+date)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -103,5 +101,5 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)  
+  console.log(`Server running on port ${PORT}`)
 })

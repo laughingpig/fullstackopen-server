@@ -12,7 +12,7 @@ const number = process.argv[4]
 const url =
   `mongodb+srv://fullstack:${password}@phonebook-balyu.mongodb.net/phonebook-app?retryWrites=true&w=majority`
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }).catch(error => 
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true  }).catch(error =>
   console.log(error)
 )
 
@@ -33,9 +33,9 @@ if (process.argv.length< 4){
     })
     mongoose.connection.close()
   })
-  .catch(error => 
-    console.log(error)
-  )
+    .catch(error =>
+      console.log(error)
+    )
 }
 else {
   const contact = new Contact({
@@ -48,7 +48,7 @@ else {
     console.log(`Added ${response.name} number ${response.number} to phonebook.`)
     mongoose.connection.close()
   })
-  .catch(error => 
-    console.log(error)
-  )
+    .catch(error =>
+      console.log(error)
+    )
 }
